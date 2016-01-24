@@ -1,0 +1,27 @@
+######################################################################
+#### Creating Plot 1 of Exploratory Data Analysis. January 2016.  ####
+######################################################################
+
+#Set the working directory
+setwd("C:/Users/mvega/OneDrive for Business/Coursera/Exploratory Data Analysis/")
+
+#Unzip, read and create a table with the whole dataset
+allData <- read.table(unz("exdata-data-household_power_consumption.zip", "household_power_consumption.txt"), header=T, quote="", sep=";")
+
+#Fix the format of columns "Date" and "Time"
+allData$Date <- as.Date(allData$Date, format = "%d/%m/%Y")
+allData$Time <- sub(".* ", "", strptime(allData$Time, format = "%H:%M:%S"))
+
+#Subsetting relevant dates
+data1 <- subset(allData, allData$Date == "2007-02-01")
+data2 <- subset(allData, allData$Date == "2007-02-02")
+
+data <- rbind (data1, data2)
+
+#Creating an object with the values to be plotted (switching them to numeric values from factors)
+GlobalActivePower <- as.numeric(data$Global_active_power)
+
+#Creating a png file of plot1 in wd
+png(filename = "plot1.png", width = 480, height = 480)
+plot1code <- hist(GlobalActivePower, col = "red")
+dev.off()
